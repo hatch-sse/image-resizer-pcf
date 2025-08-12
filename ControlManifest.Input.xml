@@ -8,20 +8,14 @@
     control-type="standard">
 
     <resources>
-      <!-- code & css -->
+      <!-- code & styles -->
       <code path="src/index.ts" order="1" />
       <css  path="css/Control.css" order="1" />
-
-      <!-- strings required by display-name-key refs -->
-      <string name="Control_DisplayName" value="Image Resizer (PCF)"/>
-      <string name="Control_Description" value="Resize and crop images to presets or custom size"/>
-      <string name="Prop_DataUri_DisplayName" value="Data URI"/>
-      <string name="Prop_OutWidth_DisplayName" value="Output Width"/>
-      <string name="Prop_OutHeight_DisplayName" value="Output Height"/>
-      <string name="Prop_FileName_DisplayName" value="File Name"/>
+      <!-- string resources (default/neutral language) -->
+      <resx path="strings/ControlManifest.resx" version="1.0.0" />
     </resources>
 
-    <!-- outputs -->
+    <!-- Outputs with display-name keys -->
     <property name="DataUri"   display-name-key="Prop_DataUri_DisplayName"   of-type="SingleLine.Text" usage="output" required="false" />
     <property name="OutWidth"  display-name-key="Prop_OutWidth_DisplayName"  of-type="Whole.None"      usage="output" required="false" />
     <property name="OutHeight" display-name-key="Prop_OutHeight_DisplayName" of-type="Whole.None"      usage="output" required="false" />
