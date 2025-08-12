@@ -24,17 +24,14 @@ jobs:
       - name: Build PCF control
         run: npx pcf-scripts build
 
-      # Install .NET & Power Platform CLI (pac) for solution packing
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
+      # ✅ Official installer – avoids the dotnet tool packaging issue
       - name: Install Power Platform CLI
-        run: dotnet tool install --global Microsoft.PowerApps.CLI.Tool
-
-      - name: Add PAC to PATH
-        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+        uses: microsoft/powerplatform-actions/actions-install@v1
 
       # Create a solution folder, add the project, and build Managed/Unmanaged zips
       - name: Init solution
