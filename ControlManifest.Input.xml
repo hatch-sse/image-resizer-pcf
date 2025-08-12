@@ -1,4 +1,5 @@
-<manifest>
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://schemas.microsoft.com/PowerApps/2016/ControlManifest">
   <control
     namespace="Hatch.ImageResizer"
     constructor="ImageResizerPCF"
@@ -17,6 +18,5 @@
     <property name="OutWidth"  display-name-key="Prop_OutWidth_DisplayName"  of-type="Whole.None"      usage="output" required="false" />
     <property name="OutHeight" display-name-key="Prop_OutHeight_DisplayName" of-type="Whole.None"      usage="output" required="false" />
     <property name="FileName"  display-name-key="Prop_FileName_DisplayName"  of-type="SingleLine.Text" usage="output" required="false" />
-
   </control>
 </manifest>
