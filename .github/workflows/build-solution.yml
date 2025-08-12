@@ -8,13 +8,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with: { node-version: '18' }
-      - run: npm ci || npm i
-      - run: npx pcf-scripts build
+
+      - name: Install dev deps
+        run: npm install
+
+      - name: Sanity check repo layout
+        run: |
+          ls -la
+          test -f ControlManifest.Input.xml
+          test -f index.ts
+          test -f Control.css
+          test -f strings/ControlManifest.resx
+
+      - name: Build PCF control
+        run: npx pcf-scripts build
+
       - uses: actions/setup-dotnet@v4
         with: { dotnet-version: '8.0.x' }
-      - uses: microsoft/powerplatform-actions/actions-install@v1
+
+      - name: Install Power Platform CLI
+        uses: microsoft/powerplatform-actions/actions-install@v1
+
       - name: Locate pac and add to PATH
         id: addpac
         shell: bash
@@ -25,11 +42,16 @@ jobs:
           echo "$DIR" >> "$GITHUB_PATH"
           which pac
           pac --version
+
       - name: Init solution
         run: |
           pac solution init --publisher-name "Hatch" --publisher-prefix "hch" --outputDirectory solution
           pac solution add-reference --path . --solution-unique-name hch_ImageResizerPCF --outputDirectory solution
+
       - name: Build solution (Both)
         run: pac solution build --outputDirectory out --packageType Both --zipFileName ImageResizerPCF
+
       - uses: actions/upload-artifact@v4
-        with: { name: ImageResizerPCF_Solution_Zips, path: out/*.zip }
+        with:
+          name: ImageResizerPCF_Solution_Zips
+          path: out/*.zip
