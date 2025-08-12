@@ -32,24 +32,27 @@ jobs:
       - name: Install Power Platform CLI
         uses: microsoft/powerplatform-actions/actions-install@v1
 
-      - name: Locate pac and add to PATH
+      # ✅ Find pac and expose it as $PAC for later steps
+      - name: Locate pac and export PAC env
         id: addpac
         shell: bash
         run: |
           DIR="$(dirname "$(find /tmp -type f -name pac 2>/dev/null | head -n1)")"
           echo "Found pac in: $DIR"
-          if [ -z "$DIR" ]; then echo "pac not found"; exit 1; fi
-          echo "$DIR" >> "$GITHUB_PATH"
-          which pac
-          pac --version
+          if [ -z "$DIR" ]; then
+            echo "pac not found"; exit 1
+          fi
+          echo "PAC=$DIR/pac" >> "$GITHUB_ENV"
+          "$DIR/pac" --version
 
       - name: Init solution
         run: |
-          pac solution init --publisher-name "Hatch" --publisher-prefix "hch" --outputDirectory solution
-          pac solution add-reference --path . --solution-unique-name hch_ImageResizerPCF --outputDirectory solution
+          "$PAC" solution init --publisher-name "Hatch" --publisher-prefix "hch" --outputDirectory solution
+          "$PAC" solution add-reference --path . --solution-unique-name hch_ImageResizerPCF --outputDirectory solution
 
       - name: Build solution (Both)
-        run: pac solution build --outputDirectory out --packageType Both --zipFileName ImageResizerPCF
+        run: |
+          "$PAC" solution build --outputDirectory out --packageType Both --zipFileName ImageResizerPCF
 
       - uses: actions/upload-artifact@v4
         with:
