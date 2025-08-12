@@ -8,7 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,11 +28,23 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      # ✅ Official installer – avoids the dotnet tool packaging issue
       - name: Install Power Platform CLI
         uses: microsoft/powerplatform-actions/actions-install@v1
 
-      # Create a solution folder, add the project, and build Managed/Unmanaged zips
+      # Add pac to PATH (the installer uses a temp tool-path)
+      - name: Locate pac and add to PATH
+        id: addpac
+        shell: bash
+        run: |
+          DIR="$(dirname "$(find /tmp -type f -name pac | head -n1)")"
+          echo "Found pac in: $DIR"
+          if [ -z "$DIR" ]; then
+            echo "pac not found"; exit 1
+          fi
+          echo "$DIR" >> $GITHUB_PATH
+          which pac
+          pac --version
+
       - name: Init solution
         run: |
           pac solution init --publisher-name "Hatch" --publisher-prefix "hch" --outputDirectory solution
