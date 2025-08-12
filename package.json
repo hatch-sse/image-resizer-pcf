@@ -1,14 +1,15 @@
 {
   "name": "image-resizer-pcf",
   "version": "1.0.0",
-  "description": "Power Apps PCF control for resizing/cropping images with presets or custom size",
+  "private": true,
   "scripts": {
     "build": "pcf-scripts build",
-    "start": "pcf-scripts start"
+    "start": "pcf-scripts start",
+    "clean": "pcf-scripts clean"
   },
   "devDependencies": {
     "@types/powerapps-component-framework": "^1.3.3",
     "pcf-scripts": "^1.8.6",
-    "typescript": "^4.7.4"
+    "typescript": "^5.4.0"
   }
 }
