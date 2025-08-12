@@ -1,4 +1,4 @@
-<manifest xmlns="http://schemas.microsoft.com/PowerApps/2016/ControlManifest">  <control
+<manifest xmlns="http://schemas.microsoft.com/PowerApps/2016/ControlManifest">
     namespace="Hatch.ImageResizer"
     constructor="ImageResizerPCF"
     version="1.0.0"
