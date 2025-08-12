@@ -3,35 +3,22 @@
     namespace="Hatch.ImageResizer"
     constructor="ImageResizerPCF"
     version="1.0.0"
-    control-type="standard">
-
-    <!-- These are ELEMENTS, not attributes -->
-    <display-name-key>Control_DisplayName</display-name-key>
-    <description-key>Control_Description</description-key>
+    control-type="standard"
+    display-name-key="Control_DisplayName"
+    description-key="Control_Description">
 
     <resources>
-      <!-- point to your actual files at repo root -->
+      <!-- point to files at the repo root -->
       <code path="index.ts" order="1" />
       <css  path="Control.css" order="1" />
+      <!-- string resources (required because we're using *-key attributes) -->
       <resx path="strings/ControlManifest.resx" version="1.0.0" />
     </resources>
 
     <!-- Outputs -->
-    <property name="DataUri" of-type="SingleLine.Text" usage="output" required="false">
-      <display-name-key>Prop_DataUri_DisplayName</display-name-key>
-    </property>
-
-    <property name="OutWidth" of-type="Whole.None" usage="output" required="false">
-      <display-name-key>Prop_OutWidth_DisplayName</display-name-key>
-    </property>
-
-    <property name="OutHeight" of-type="Whole.None" usage="output" required="false">
-      <display-name-key>Prop_OutHeight_DisplayName</display-name-key>
-    </property>
-
-    <property name="FileName" of-type="SingleLine.Text" usage="output" required="false">
-      <display-name-key>Prop_FileName_DisplayName</display-name-key>
-    </property>
-
+    <property name="DataUri"   display-name-key="Prop_DataUri_DisplayName"   of-type="SingleLine.Text" usage="output" required="false" />
+    <property name="OutWidth"  display-name-key="Prop_OutWidth_DisplayName"  of-type="Whole.None"      usage="output" required="false" />
+    <property name="OutHeight" display-name-key="Prop_OutHeight_DisplayName" of-type="Whole.None"      usage="output" required="false" />
+    <property name="FileName"  display-name-key="Prop_FileName_DisplayName"  of-type="SingleLine.Text" usage="output" required="false" />
   </control>
 </manifest>
