@@ -8,18 +8,15 @@
     control-type="standard">
 
     <resources>
-      <!-- code & styles -->
-      <code path="src/index.ts" order="1" />
-      <css  path="css/Control.css" order="1" />
-      <!-- string resources (default/neutral language) -->
+      <!-- point to your actual files at repo root -->
+      <code path="index.ts" order="1" />
+      <css  path="Control.css" order="1" />
       <resx path="strings/ControlManifest.resx" version="1.0.0" />
     </resources>
 
-    <!-- Outputs with display-name keys -->
     <property name="DataUri"   display-name-key="Prop_DataUri_DisplayName"   of-type="SingleLine.Text" usage="output" required="false" />
     <property name="OutWidth"  display-name-key="Prop_OutWidth_DisplayName"  of-type="Whole.None"      usage="output" required="false" />
     <property name="OutHeight" display-name-key="Prop_OutHeight_DisplayName" of-type="Whole.None"      usage="output" required="false" />
     <property name="FileName"  display-name-key="Prop_FileName_DisplayName"  of-type="SingleLine.Text" usage="output" required="false" />
-
   </control>
 </manifest>
