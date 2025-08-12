@@ -1,0 +1,30 @@
+name: Build PCF Solution
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build PCF control
+        run: npm run build
+
+      - name: Pack solution
+        run: npx pcf-scripts pack
+
+      - name: Upload packaged solution
+        uses: actions/upload-artifact@v3
+        with:
+          name: image-resizer-solution
+          path: ./out/*.zip
