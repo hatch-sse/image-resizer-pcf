@@ -1,15 +1,22 @@
 <manifest xmlns="http://schemas.microsoft.com/PowerApps/2016/ControlManifest">
-  <control namespace="Hatch.ImageResizer" constructor="ImageResizerPCF" version="1.0.0" display-name-key="Image Resizer" description-key="Resizes and crops images to presets or custom sizes" control-type="standard">
+  <control
+    namespace="Hatch.ImageResizer"
+    constructor="ImageResizerPCF"
+    version="1.0.0"
+    display-name-key="Image Resizer"
+    description-key="Resizes and crops images to presets or custom sizes"
+    control-type="standard">
+
     <resources>
-      <code path="index.ts" order="1" />
-      <css path="css/Control.css" order="1" />
+      <code path="src/index.ts" order="1" />
+      <css  path="css/Control.css" order="1" />
     </resources>
-    <property name="DataUri" display-name-key="Data URI" description-key="Exported image as Data URI" type="SingleLine.Text" usage="output" />
-    <property name="OutWidth" display-name-key="Output Width" description-key="Width of resized image" type="Whole.None" usage="output" />
-    <property name="OutHeight" display-name-key="Output Height" description-key="Height of resized image" type="Whole.None" usage="output" />
-    <property name="FileName" display-name-key="File Name" description-key="Suggested file name" type="SingleLine.Text" usage="output" />
-    <resources>
-      <string name="Image Resizer" value="Image Resizer"/>
-    </resources>
+
+    <!-- Outputs (note: use of-type, not type) -->
+    <property name="DataUri"   display-name-key="Data URI"     description-key="Exported image as Data URI" type-group="SingleLine.Text" of-type="SingleLine.Text" usage="output" required="false" />
+    <property name="OutWidth"  display-name-key="Output Width" description-key="Width of resized image"      of-type="Whole.None"        usage="output" required="false" />
+    <property name="OutHeight" display-name-key="Output Height" description-key="Height of resized image"    of-type="Whole.None"        usage="output" required="false" />
+    <property name="FileName"  display-name-key="File Name"    description-key="Suggested file name"         of-type="SingleLine.Text"   usage="output" required="false" />
+
   </control>
 </manifest>
