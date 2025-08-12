@@ -2,29 +2,51 @@ name: Build PCF Solution
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ main, master ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '18'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install dev deps
+        run: npm ci || npm i
 
       - name: Build PCF control
-        run: npm run build
+        run: npx pcf-scripts build
 
-      - name: Pack solution
-        run: npx pcf-scripts pack
-
-      - name: Upload packaged solution
-        uses: actions/upload-artifact@v3
+      # Install .NET & Power Platform CLI (pac) for solution packing
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
         with:
-          name: image-resizer-solution
-          path: ./out/*.zip
+          dotnet-version: '8.0.x'
+
+      - name: Install Power Platform CLI
+        run: dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+
+      - name: Add PAC to PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      # Create a solution folder, add the project, and build Managed/Unmanaged zips
+      - name: Init solution
+        run: |
+          pac solution init --publisher-name "Hatch" --publisher-prefix "hch" --outputDirectory solution
+          pac solution add-reference --path . --solution-unique-name hch_ImageResizerPCF --outputDirectory solution
+
+      - name: Build solution (Both)
+        run: pac solution build --outputDirectory out --packageType Both --zipFileName ImageResizerPCF
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ImageResizerPCF_Solution_Zips
+          path: out/*.zip
