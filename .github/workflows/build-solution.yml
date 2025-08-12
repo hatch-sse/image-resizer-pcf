@@ -32,7 +32,7 @@ jobs:
       - name: Install Power Platform CLI
         uses: microsoft/powerplatform-actions/actions-install@v1
 
-      # ✅ Find pac and expose it as $PAC for later steps
+      # Find pac and expose it as $PAC for later steps
       - name: Locate pac and export PAC env
         id: addpac
         shell: bash
@@ -43,7 +43,7 @@ jobs:
             echo "pac not found"; exit 1
           fi
           echo "PAC=$DIR/pac" >> "$GITHUB_ENV"
-          "$DIR/pac" --version
+          "$DIR/pac" help
 
       - name: Init solution
         run: |
