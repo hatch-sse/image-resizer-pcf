@@ -1,45 +1,30 @@
 name: Build PCF Solution
-
 on:
   workflow_dispatch:
-  push:
-    branches: [ main, master ]
+  push: { branches: [ main, master ] }
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      # 1) Checkout code
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # 2) Node for pcf-scripts
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
+      - uses: actions/setup-node@v4
+        with: { node-version: '18' }
 
-      # 3) Install deps (no lockfile needed)
       - name: Install dev deps
         run: npm install
 
-      # 4) Build PCF (validates ControlManifest.Input.xml)
       - name: Build PCF control
         run: npx pcf-scripts build
 
-      # 5) .NET SDK (needed for PAC solution packing)
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
+      - uses: actions/setup-dotnet@v4
+        with: { dotnet-version: '8.0.x' }
 
-      # 6) Install Power Platform CLI (pac)
       - name: Install Power Platform CLI
         uses: microsoft/powerplatform-actions/actions-install@v1
 
-      # 7) Add pac to PATH (the installer uses a temp tool-path)
-      - name: Locate pac and add to PATH
+      - name: Locate pac and export PAC env
         id: addpac
         shell: bash
         run: |
@@ -48,22 +33,19 @@ jobs:
           if [ -z "$DIR" ]; then
             echo "pac not found"; exit 1
           fi
-          echo "$DIR" >> "$GITHUB_PATH"
-          which pac
-          pac --version
+          echo "PAC=$DIR/pac" >> "$GITHUB_ENV"
+          "$DIR/pac" --version
 
-      # 8) Create solution folder, add this project, then build Managed/Unmanaged zips
       - name: Init solution
         run: |
-          pac solution init --publisher-name "Hatch" --publisher-prefix "hch" --outputDirectory solution
-          pac solution add-reference --path . --solution-unique-name hch_ImageResizerPCF --outputDirectory solution
+          "$PAC" solution init --publisher-name "Hatch" --publisher-prefix "hch" --outputDirectory solution
+          "$PAC" solution add-reference --path . --solution-unique-name hch_ImageResizerPCF --outputDirectory solution
 
       - name: Build solution (Both)
-        run: pac solution build --outputDirectory out --packageType Both --zipFileName ImageResizerPCF
+        run: |
+          "$PAC" solution build --outputDirectory out --packageType Both --zipFileName ImageResizerPCF
 
-      # 9) Upload zips as a workflow artifact
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: ImageResizerPCF_Solution_Zips
           path: out/*.zip
