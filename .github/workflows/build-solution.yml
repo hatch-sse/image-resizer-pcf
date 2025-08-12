@@ -45,14 +45,22 @@ jobs:
           echo "PAC=$DIR/pac" >> "$GITHUB_ENV"
           "$DIR/pac" help
 
+      # Create solution scaffold at ./solution
       - name: Init solution
         run: |
           "$PAC" solution init --publisher-name "Hatch" --publisher-prefix "hch" --outputDirectory solution
-          "$PAC" solution add-reference --path . --solution-unique-name hch_ImageResizerPCF --outputDirectory solution
 
-      - name: Build solution (Both)
+      # Add the PCF project (repo root) into the solution
+      - name: Add PCF project to solution
+        working-directory: solution
         run: |
-          "$PAC" solution build --outputDirectory out --packageType Both --zipFileName ImageResizerPCF
+          "$PAC" solution add-reference --path ..
+
+      # Build Managed & Unmanaged zips to ./out
+      - name: Build solution (Both)
+        working-directory: solution
+        run: |
+          "$PAC" solution build --path . --outputDirectory ../out --packageType Both --zipFileName ImageResizerPCF
 
       - uses: actions/upload-artifact@v4
         with:
