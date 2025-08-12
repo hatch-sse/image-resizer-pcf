@@ -36,7 +36,7 @@ jobs:
       - name: Add PAC to PATH
         run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
 
-      # Create a solution folder and add this project, then build both Managed/Unmanaged zips
+      # Create a solution folder, add the project, and build Managed/Unmanaged zips
       - name: Init solution
         run: |
           pac solution init --publisher-name "Hatch" --publisher-prefix "hch" --outputDirectory solution
