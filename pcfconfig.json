@@ -1,0 +1,8 @@
+{
+  "namespace": "Hatch.ImageResizer",
+  "name": "ImageResizerPCF",
+  "template": "field",
+  "control": "ImageResizerPCF",
+  "version": "1.0.0",
+  "publisherPrefix": "hch"
+}
